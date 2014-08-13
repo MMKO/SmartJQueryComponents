@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="it-IT"> <!--<![endif]-->
+<head>
+
+	<meta charset="utf-8" />
+	<title>SmartJWizard</title>
+
+	<!--[if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<!-- CSS	================================================== -->
+
+	<link href="libs/jQuery/styles/smoothness/jquery-ui-1.10.4.custom.css" rel="stylesheet">
+	<link href="style/base.css" rel="stylesheet">
+
+	<link href="style/wizard.css" rel="stylesheet">
+
+</head>
+<body class="background">
+	<div class="container">
+
+		<button id="StartWizard"> Start </button>
+
+		<div style="display:none">
+			<section id="wizard-step1">
+				<h1>wizard-step1</h1>
+				<p>
+
+				</p>
+			</section>
+			<section id="wizard-step2">
+				<h1>wizard-step2</h1>
+			</section>
+			<section id="wizard-step3">
+				<h1>wizard-step3</h1>
+			</section>
+		</div>
+
+	</div><!-- container -->
+
+	<script src="libs/jQuery/jquery-2.1.1.js"></script>
+	<script src="libs/jQuery/jquery-ui-1.10.4.js"></script>
+	<script src="script/Wizard.js"></script>
+
+	<script type="text/javascript">
+
+	jQuery(function($) {
+		$("#StartWizard").button().on("click", startWizard);
+
+		var wizard = new SmartJWizard({
+			frames : [
+				frameZero,
+				frameUno,
+				frameDue
+			]
+		}).on("close",function(){
+			console.log("Wizard closed")
+		});
+
+		function startWizard(){
+				wizard.show({
+					resizable: true,
+					height:500,
+					width:500,
+					modal: true
+				});
+		}
+
+		function frameZero(toolbox){
+			return {
+				text: "First frame",
+				init: function(){
+						toolbox.setContent($("#wizard-step1").clone());
+						toolbox.busy(false);
+						toolbox.enableButtons(["Next","Cancel"]);
+				},
+				next : function(){
+					toolbox.setFrameData({ stuff : "Hello world from frame zero!" });
+					this.gotoFrame(1);
+				}
+			};
+		}
+
+		function frameUno(toolbox){
+			return {
+				text: "Second frame",
+				buttons: ["prev","Next","Cancel","Ciao"],
+				init: function(){
+					setTimeout(function(){
+						toolbox.setContent($("#wizard-step2").clone());
+						toolbox.busy(false);
+						toolbox.enableButtons(["Next","Ciao"]);
+					},5000);
+				},
+				prev : function(){
+					this.gotoFrame(0);
+				},
+				next : function(){
+					this.gotoFrame(2);
+				},
+				ciao : function(){
+					alert("Ciao");
+				}
+			};
+		}
+
+		function frameDue(toolbox){
+			return {
+				text: "Final frame",
+				buttons: ["prev","Finish","ErrorTest"],
+				init: function(){
+					setTimeout(function(){
+						toolbox.setContent($("#wizard-step3").clone());
+						toolbox.busy(false);
+						toolbox.enableButtons(["prev","finish","ErrorTest"]);
+					},5000);
+				},
+				errortest : function(){
+					toolbox.error("Unreachable server :(");
+				},
+				prev : function(){
+					this.gotoFrame(1);
+				},
+				finish : function(){
+					console.log(toolbox.getFrameData(0));
+				}
+			};
+		}
+
+	});
+
+
+	</script>
+
+</body>
+</html>

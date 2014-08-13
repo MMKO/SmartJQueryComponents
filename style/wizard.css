@@ -1,0 +1,39 @@
+div.wizard_loading {
+	height:100%;
+	width:100%;
+	display:block;
+	position:absolute;
+	overflow:hidden;
+	top:0;
+	left:0;
+	opacity:0.3;
+}
+#wizard_loading div.ui-progressbar *{
+	opacity:1;
+}
+#wizard_loading div.ui-progressbar {
+	display: block;
+	position: absolute;
+	left: 10%;
+	right: 10%;
+	top: 40%;
+	height: 10%;
+}
+#wizard_container.Loading{
+	opacity:0.3;
+}
+
+#wizard-button-prev{
+	float:left;
+}
+
+div.ui-dialog-buttonset{
+	width:100%;
+}
+
+div.ui-dialog-buttonset button.ui-button{
+	float:right;
+}
+wizard-button-prev{
+	float:left;
+}
